@@ -1,0 +1,494 @@
+import React, { useState } from 'react';
+import {
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Platform
+} from 'react-native';
+import { Searchbar, Card, Button, Chip } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+
+const appetizers = [
+  {
+    id: '1',
+    name: 'Prawn Spring Rolls',
+    description: 'Crispy prawn rolls served with sweet chili sauce.',
+    price: 'R90',
+    type: 'Appetizer',
+    imageUrl:
+      'https://images.pexels.com/photos/7363745/pexels-photo-7363745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: '2',
+    name: 'Salmon Sushi Roll',
+    description: 'Fresh salmon sushi rolls with avocado and cream cheese.',
+    price: 'R78',
+    type: 'Appetizer',
+    imageUrl:
+      'https://images.pexels.com/photos/3147493/pexels-photo-3147493.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: '3',
+    name: 'BBQ Sticky Wings',
+    description: 'Deliciously sticky BBQ wings served with ranch dressing.',
+    price: 'R110',
+    type: 'Appetizer',
+    imageUrl:
+      'https://images.pexels.com/photos/27645103/pexels-photo-27645103/free-photo-of-wild-wings-wings-photography.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: '4',
+    name: 'Chicken Curry',
+    description: 'Spicy chicken curry served with rice.',
+    price: 'R120',
+    type: 'Main',
+    imageUrl:
+      'https://images.pexels.com/photos/1640771/pexels-photo-1640771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  {
+    id: '5',
+    name: 'Chocolate Lava Cake',
+    description: 'Warm chocolate cake with a gooey center.',
+    price: 'R80',
+    type: 'Dessert',
+    imageUrl:
+      'https://images.pexels.com/photos/1640771/pexels-photo-1640771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+];
+
+
+const renderItem = ({ item }) => (
+  <View style={styles.menuItem}>
+    <Image style={styles.itemImage} source={{ uri: item.imageUrl }} />
+    <View style={styles.itemDetails}>
+      <Text style={styles.itemTitle}>{item.name}</Text>
+      <Text style={styles.itemDescription}>{item.description}</Text>
+    </View>
+    <View style={styles.priceAndButton}>
+      <Text style={styles.price}>{item.price}</Text>
+      <Button mode="contained" style={styles.addButton}>
+        Add
+      </Button>
+    </View>
+  </View>
+);
+
+// Define the appetizers, mains, and desserts data
+ppetizers = [
+  {
+    id: '1',
+    name: 'Prawn Spring Rolls',
+    description: 'Crispy prawn rolls served with sweet chili sauce.',
+    price: 'R90',
+    type: 'Appetizer',
+    imageUrl: 'https://images.pexels.com/photos/7363745/pexels-photo-7363745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+ 
+];
+
+const mains = [
+  {
+    id: '1',
+    name: 'Chicken Curry',
+    description: 'Spicy chicken curry served with rice.',
+    price: 'R120',
+    type: 'Main',
+    imageUrl: 'https://images.pexels.com/photos/1640771/pexels-photo-1640771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  
+];
+
+const desserts = [
+  {
+    id: '1',
+    name: 'Chocolate Lava Cake',
+    description: 'Warm chocolate cake with a gooey center.',
+    price: 'R80',
+    type: 'Dessert',
+    imageUrl: 'https://images.pexels.com/photos/1640771/pexels-photo-1640771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  },
+  
+];
+
+
+const allDishes = [...appetizers, ...mains, ...desserts];
+
+// Appetizers Screen
+function AppetizersScreen({ navigation }) {
+  const [selectedCourse, setSelectedCourse] = useState('Appetizer');
+
+  // Filtering dishes based on the selected course
+  const filteredDishes = allDishes.filter((dish) => dish.type === selectedCourse);
+
+  console.log(filteredDishes); 
+
+  const renderItem = ({ item }) => (
+    <View style={styles.menuItem}>
+      <Image style={styles.itemImage} source={{ uri: item.imageUrl }} />
+      <View style={styles.itemDetails}>
+        <Text style={styles.itemTitle}>{item.name}</Text>
+        <Text style={styles.itemDescription}>{item.description}</Text>
+        <Text style={styles.price}>{item.price}</Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backArrow}>{'<'}</Text>
+        </TouchableOpacity>
+        <Searchbar placeholder="Search" style={styles.searchbar} />
+        <Button icon="filter" style={styles.filterButton} />
+      </View>
+
+      <View style={styles.chipContainer}>
+        <Chip
+          selected={selectedCourse === 'Appetizer'}
+          onPress={() => setSelectedCourse('Appetizer')}
+          style={styles.chip}
+        >
+          Appetizers
+        </Chip>
+        <Chip
+          selected={selectedCourse === 'Main'}
+          onPress={() => setSelectedCourse('Main')}
+          style={styles.chip}
+        >
+          Mains
+        </Chip>
+        <Chip
+          selected={selectedCourse === 'Dessert'}
+          onPress={() => setSelectedCourse('Dessert')}
+          style={styles.chip}
+        >
+          Desserts
+        </Chip>
+      </View>
+
+      <Text style={styles.resultText}>
+        {filteredDishes.length} results for "{selectedCourse}"
+      </Text>
+
+      {filteredDishes.length === 0 ? (
+        <Text>No dishes available for {selectedCourse}</Text>
+      ) : (
+        <FlatList
+          data={filteredDishes}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+
+      <TouchableOpacity onPress={() => navigation.navigate('CreateDishScreen')}>
+        <Text style={styles.createDishArrow}>
+          Create a New Dish {'>'}
+        </Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+}
+
+
+
+// Create Dish Screen
+function CreateDishScreen() {
+  const [dishName, setDishName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('Appetizer');
+
+  const handleAddDish = () => {
+    // add the dish to the menu
+    console.log('Dish Added:', { dishName, description, price, category });
+  };
+
+  const handleRemoveDish = () => {
+    //  remove the dish
+    console.log('Dish Removed:', { dishName });
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>Creating Dishes</Text>
+      <Image
+        style={styles.imagePlaceholder}
+        source={{
+          uri: 'https://images.pexels.com/photos/1192031/pexels-photo-1192031.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        }}
+      />
+
+      <TextInput
+        placeholder="Dish Name"
+        style={styles.input}
+        value={dishName}
+        onChangeText={setDishName}
+      />
+
+      <TextInput
+        placeholder="Description"
+        style={styles.input}
+        value={description}
+        onChangeText={setDescription}
+      />
+
+      <TextInput
+        placeholder="Price"
+        style={styles.input}
+        value={price}
+        keyboardType="numeric"
+        onChangeText={setPrice}
+      />
+
+      <View style={styles.categoryContainer}>
+        <Text style={styles.categoryText}>Category:</Text>
+        {['Appetizer', 'Main', 'Dessert'].map((cat) => (
+          <TouchableOpacity
+            key={cat}
+            style={[
+              styles.categoryButton,
+              category === cat && styles.selectedCategory,
+            ]}
+            onPress={() => setCategory(cat)}
+          >
+            <Text>{cat}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <Button mode="contained" onPress={handleAddDish} style={styles.actionButton}>
+        Add Dish
+      </Button>
+      <Button mode="outlined" onPress={handleRemoveDish} style={styles.actionButton}>
+        Remove Dish
+      </Button>
+    </SafeAreaView>
+  );
+}
+
+// Home Screen
+function HomeScreen({ navigation }) {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Home</Text>
+          <Button icon="arrow-right" onPress={() => navigation.navigate('AppetizersScreen')} />
+        </View>
+
+        <Searchbar placeholder="Search" style={styles.searchbar} />
+
+        <Text style={styles.subHeader}>This week's menu</Text>
+        <Card style={styles.card}>
+          <Image
+            style={styles.imagePlaceholder}
+            source={{
+              uri: 'https://images.pexels.com/photos/7363745/pexels-photo-7363745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            }}
+          />
+        </Card>
+
+        <View style={styles.sectionHeader}>
+          <Text style={styles.subHeader}>Recommended menu for you</Text>
+          <Text style={styles.viewAll}>View all</Text>
+        </View>
+
+        <ScrollView horizontal>
+          <Card style={styles.smallCard}>
+            <Image
+              style={styles.imagePlaceholder}
+              source={{
+                uri: 'https://images.pexels.com/photos/3026810/pexels-photo-3026810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              }}
+             
+            />
+          </Card>
+          <Card style={styles.smallCard}>
+            <Image
+              style={styles.imagePlaceholder}
+              source={{
+                uri: 'https://images.pexels.com/photos/19345991/pexels-photo-19345991/free-photo-of-delicious-beef-burger.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              }}
+              />
+          </Card>
+          
+          <Card style={styles.smallCard}>
+            <Image
+              style={styles.imagePlaceholder}
+              source={{
+                uri: 'https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 
+              }}
+              />
+          </Card>
+          
+          <Card style={styles.smallCard}>
+            <Image
+              style={styles.imagePlaceholder}
+              source={{
+                uri: 'https://images.pexels.com/photos/24738507/pexels-photo-24738507/free-photo-of-close-up-of-chicken-noodles-dish.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 
+              }}
+            />
+          </Card>
+        </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+
+const Stack = createStackNavigator();
+
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="AppetizersScreen" component={AppetizersScreen} />
+        <Stack.Screen name="CreateDishScreen" component={CreateDishScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  backArrow: {
+    fontSize: 18,
+    marginRight: 10,
+  },
+  searchbar: {
+    flex: 1,
+    marginVertical: 10,
+  },
+  filterButton: {
+    marginLeft: 10,
+  },
+  chipContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+  },
+  chip: {
+    margin: 5,
+  },
+  resultText: {
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+  itemImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 5,
+  },
+  itemDetails: {
+    flex: 1,
+    marginHorizontal: 10,
+  },
+  itemTitle: {
+    fontWeight: 'bold',
+  },
+  itemDescription: {
+    color: 'gray',
+  },
+  priceAndButton: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  price: {
+    fontWeight: 'bold',
+  },
+  addButton: {
+    marginTop: 5,
+  },
+  createDishArrow: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: 200,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  categoryText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  categoryButton: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 5,
+    borderRadius: 5,
+    width: 80,
+    alignItems: 'center',
+  },
+  selectedCategory: {
+    backgroundColor: 'lightgray',
+  },
+  actionButton: {
+    marginVertical: 5,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  subHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  viewAll: {
+    color: 'blue',
+  },
+  smallCard: {
+    width: 100,
+    marginRight: 10,
+  },
+});
